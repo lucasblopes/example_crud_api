@@ -1,7 +1,8 @@
 # example_crud_api
 A minimal docker ready react frontend that matches the django api
 
-#Project structure
+# Project structure
+<pre><code>
 frontend/
 ├── public/
 │   ├── index.html
@@ -19,11 +20,13 @@ frontend/
 ├── package.json
 ├── Dockerfile
 └── docker-compose.yml
+</code></pre>
 
-#The mock html can be used as reference
+# The mock html can be used as reference
 frontend/public/static-mock.html
 
-#There are critical missing files that need to be implemented as the exercise
+# There are critical missing files that need to be implemented as the exercise
+<pre><code>
 frontend/
 ├── public/
 │   ├── index.html
@@ -41,3 +44,4 @@ frontend/
 ├── package.json
 ├── Dockerfile
 └── docker-compose.yml
+</code></pre>
