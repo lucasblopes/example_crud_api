@@ -11,10 +11,20 @@ function App() {
     // Tracks the current offset for pagination to fetch the correct page of data
     const [offset, setOffset] = useState(0);
     const [personToEdit, setPersonToEdit] = useState(null);
+    // Saves filters for use during pagination.
+    const [filters, setFilters] = useState({ startDate: '', endDate: '' });
 
-    const loadPersons = async () => {
+    const loadPersons = async (startDateArg, endDateArg) => {
+        // Uses arguments if provided, otherwise uses the state.
+        const currentStart = startDateArg !== undefined ? startDateArg : filters.startDate;
+        const currentEnd = endDateArg !== undefined ? endDateArg : filters.endDate;
+
+        // Update state if new filters are added
+        if (startDateArg !== undefined) {
+            setFilters({ startDate: startDateArg, endDate: endDateArg });
+        }
         try {
-            const data = await api.fetchPersons(10, offset);
+            const data = await api.fetchPersons(10, offset, currentStart, currentEnd);
             setPersons(data.results);
             setPagination({ next: data.next, previous: data.previous });
         } catch (error) {
@@ -33,10 +43,9 @@ function App() {
             <h3>Person CRUD Demo</h3>
             <hr />
 
-            // Layout Note: Components are stacked vertically rather than side-by-side
             <div className="mb-5">
                 <PersonForm
-                    onRefresh={loadPersons}
+                    onRefresh={() => loadPersons()}
                     personToEdit={personToEdit}
                     setPersonToEdit={setPersonToEdit}
                 />
@@ -51,7 +60,6 @@ function App() {
             </div>
 
             <LongTaskPanel />
-
         </div>
     );
 }

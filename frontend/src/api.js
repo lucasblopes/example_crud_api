@@ -2,9 +2,13 @@
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8001/api';
 
 export const api = {
-    // Fetch a paginated list of persons
-    fetchPersons: async (limit = 10, offset = 0) => {
-        const response = await fetch(`${API_BASE_URL}/persons/?limit=${limit}&offset=${offset}`);
+    // Fetch a paginated list of persons with filters
+    fetchPersons: async (limit = 10, offset = 0, startDate = '', endDate = '') => {
+        let url = `${API_BASE_URL}/persons/?limit=${limit}&offset=${offset}`;
+        if (startDate) url += `&start_date=${startDate}`;
+        if (endDate) url += `&end_date=${endDate}`;
+
+        const response = await fetch(url);
         return response.json();
     },
 

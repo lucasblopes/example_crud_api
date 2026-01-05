@@ -4,12 +4,14 @@ import { api } from '../api';
 // Form component used to create or edit a person
 const PersonForm = ({ onRefresh, personToEdit, setPersonToEdit }) => {
     const [name, setName] = useState('');
+    const [age, setAge] = useState('');
     const [hobbies, setHobbies] = useState('');
 
     // Fill the form fields when editing an existing person
     useEffect(() => {
         if (personToEdit) {
             setName(personToEdit.person_name);
+            setAge(personToEdit.age || '');
             setHobbies(
                 Array.isArray(personToEdit.hobbies)
                     ? personToEdit.hobbies.join(', ')
@@ -30,6 +32,7 @@ const PersonForm = ({ onRefresh, personToEdit, setPersonToEdit }) => {
 
         const payload = {
             person_name: name,
+            age: parseInt(age, 10), // Sends as a number
             hobbies: hobbiesList
         };
 
@@ -45,6 +48,7 @@ const PersonForm = ({ onRefresh, personToEdit, setPersonToEdit }) => {
 
             // Reset form fields
             setName('');
+            setAge('');
             setHobbies('');
             onRefresh(); // Refresh the list
         } catch (error) {
@@ -57,6 +61,7 @@ const PersonForm = ({ onRefresh, personToEdit, setPersonToEdit }) => {
     const handleCancel = () => {
         setPersonToEdit(null);
         setName('');
+        setAge('');
         setHobbies('');
     };
 
@@ -69,6 +74,14 @@ const PersonForm = ({ onRefresh, personToEdit, setPersonToEdit }) => {
                     placeholder="Person name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    required
+                />
+                <input
+                    type="number"
+                    className="form-control"
+                    placeholder="Age"
+                    value={age}
+                    onChange={(e) => setAge(e.target.value)}
                     required
                 />
                 <input
